@@ -43,4 +43,66 @@ mahasiswaRoute.post("/", ({ params, body }) => {
     }
 });
 
-// tambahkan PUT, PATCH, DELETE, CONNECT
+mahasiswaRoute.put("/:id", ({ params, body }) => {
+    const mahasiswaId = parseInt(params.id);
+    const data = mahasiswa.find(m => m.id === mahasiswaId);
+
+    if (data) {
+        const input = body as {
+            nama: string;
+            email: string;
+            jurusan: string;
+        };
+
+        Object.assign(data, {
+            nama: input.nama,
+            email: input.email,
+            jurusan: input.jurusan
+        });
+
+        return {
+            message: "Data mahasiswa berhasil diubah",
+            data
+        };
+    } else {
+        return { error: "Mahasiswa tidak ditemukan" };
+    }
+});
+
+mahasiswaRoute.patch("/:id", ({ params, body }) => {
+    const mahasiswaId = parseInt(params.id);
+    const data = mahasiswa.find(m => m.id === mahasiswaId);
+
+    if (data) {
+        Object.assign(data, body);
+
+        return {
+            message: "Sebagian data mahasiswa berhasil diubah",
+            data
+        };
+    } else {
+        return { error: "Mahasiswa tidak ditemukan" };
+    }
+});
+
+mahasiswaRoute.delete("/:id", ({ params }) => {
+    const mahasiswaId = parseInt(params.id);
+    const index = mahasiswa.findIndex(m => m.id === mahasiswaId);
+
+    if (index !== -1) {
+        const data = mahasiswa.splice(index, 1);
+
+        return {
+            message: "Data mahasiswa berhasil dihapus",
+            data: data[0]
+        };
+    } else {
+        return { error: "Mahasiswa tidak ditemukan" };
+    }
+});
+
+mahasiswaRoute.route("CONNECT", "/", () => {
+    return {
+        message: "Request CONNECT berhasil diterima"
+    };
+});

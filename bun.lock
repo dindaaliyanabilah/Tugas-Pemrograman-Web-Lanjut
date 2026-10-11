@@ -4,6 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
+        "@sinclair/typebox": "^0.34.52",
         "elysia": "^1.4.30",
       },
     },
